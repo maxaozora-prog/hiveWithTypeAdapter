@@ -51,15 +51,6 @@ class PersonController extends ChangeNotifier{
       try{
         await usuariosBox.add(createPerson);
 
-        //  final pessoa = personHive(
-        //  name: createPerson.name,
-        //  age: createPerson.age,
-        //  email: createPerson.email,
-        //  );
-
-        //  await usuariosBox.add(pessoa);
-      
-
         mensagemNotifier.value =
           SuccessMessage(message: "Pessoa adicionada com sucesso.");
      
