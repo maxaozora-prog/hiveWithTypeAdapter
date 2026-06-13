@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hive_type_adpter/buscar_item.dart';
 import 'package:flutter_hive_type_adpter/home_page.dart';
 import 'package:flutter_hive_type_adpter/register.dart';
 import 'package:flutter_hive_type_adpter/routes/routes.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_hive_type_adpter/routes/routes.dart';
 Map<String, WidgetBuilder> routes = {
   Routes.initialRoute: (BuildContext context) => MyWidget(), 
   Routes.register: (BuildContext context) => Register(person: null,), 
+  Routes.buscar: (BuildContext context) => TelaBusca(), 
 
   //  Routes.register: (BuildContext context) {//Http put
   //   final params =

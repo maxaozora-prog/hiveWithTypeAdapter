@@ -151,6 +151,17 @@ class _MyWidgetState extends State<MyWidget> {
           Navigator.of(context).pushNamed(Routes.register);
         },
       ),
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+       padding: EdgeInsets.all(8),
+         child: ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(Routes.buscar);
+        },
+        child: Text('Buscar Cadastro'),
+      ),
+    ),
+      ),
     );
   }
 
