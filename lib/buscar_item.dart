@@ -13,19 +13,21 @@ class TelaBusca extends StatefulWidget {
 class _TelaBuscaState extends State<TelaBusca> {
   final TextEditingController _controller = TextEditingController();
 
-  String resultado = '';
+  // String resultado = '';
   bool carregando = false;
-  String idade= "";
-  String email= "";
+  // String idade= "";
+  // String email= "";
+  List<personHive> resultados = [];
 
   late final Box<personHive> usuariosBox= Hive.box<personHive>('usuarios');
 
   Future<void> buscarItem() async {
     setState(() {
       carregando = true;
-      resultado = '';
-      idade= "";
-      email= "";
+      // resultado = '';
+      // idade= "";
+      // email= "";
+       resultados.clear();
 
     });
 
@@ -47,22 +49,21 @@ class _TelaBuscaState extends State<TelaBusca> {
     }).toList();
 
     if (query.isNotEmpty) {
-      final usuario = query.first;
+      // final usuario = query.first;
 
       setState(() {
-        resultado = usuario.name;
-        idade = usuario.age.toString();
-        email = usuario.email;
+        // resultado = usuario.name;
+        // idade = usuario.age.toString();
+        // email = usuario.email;
+        resultados = query;
       });
-    } else {
-      setState(() {
-        resultado = 'Item não encontrado';
-      });
-    }
+    // } else {
+    //   setState(() {
+    //     resultado = 'Item não encontrado';
+    //   });
+     }
   } catch (e) {
-    setState(() {
-      resultado = 'Erro: $e';
-    });
+    print(e);
   }
 
   setState(() {
@@ -72,65 +73,117 @@ class _TelaBuscaState extends State<TelaBusca> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Busca Firestore'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(
-                labelText: 'Digite o nome para a busca',
-                border: OutlineInputBorder(),
-              ),
-            ),
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: const Text('Busca Firestore'),
+    //   ),
+    //   body: Padding(
+    //     padding: const EdgeInsets.all(16),
+    //     child: Column(
+    //       children: [
+    //         TextField(
+    //           controller: _controller,
+    //           decoration: const InputDecoration(
+    //             labelText: 'Digite o nome para a busca',
+    //             border: OutlineInputBorder(),
+    //           ),
+    //         ),
 
-            const SizedBox(height: 16),
+    //         const SizedBox(height: 16),
 
-            ElevatedButton(
-              onPressed: buscarItem,
-              child: const Text('Buscar'),
-            ),
+    //         ElevatedButton(
+    //           onPressed: buscarItem,
+    //           child: const Text('Buscar'),
+    //         ),
 
-            const SizedBox(height: 24),
+    //         const SizedBox(height: 24),
 
-            if (carregando)
-              const CircularProgressIndicator()
-            else
-              Text(
-                resultado,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+    //         if (carregando)
+    //           const CircularProgressIndicator()
+    //         else
+    //           Text(
+    //             resultado,
+    //             style: const TextStyle(
+    //               fontSize: 22,
+    //               fontWeight: FontWeight.bold,
+    //             ),
                 
-              ),
-              SizedBox(height:10),
-              if (idade.isNotEmpty)
-                Text(
-                "Idade : $idade",
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+    //           ),
+    //           SizedBox(height:10),
+    //           if (idade.isNotEmpty)
+    //             Text(
+    //             "Idade : $idade",
+    //             style: const TextStyle(
+    //               fontSize: 22,
+    //               fontWeight: FontWeight.bold,
+    //             ),
                 
-              ),
-              SizedBox(height:10),
-                Text(
-                email,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+    //           ),
+    //           SizedBox(height:10),
+    //             Text(
+    //             email,
+    //             style: const TextStyle(
+    //               fontSize: 22,
+    //               fontWeight: FontWeight.bold,
+    //             ),
                 
-              ),
+    //           ),
               
-          ],
+    //       ],
+    //     ),
+    //   ),
+    // );
+
+    return Scaffold(
+  appBar: AppBar(
+    title: const Text('Busca Hive'),
+  ),
+  body: Padding(
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      children: [
+
+        TextField(
+          controller: _controller,
+          decoration: const InputDecoration(
+            labelText: 'Digite o nome',
+          ),
         ),
-      ),
-    );
+
+        const SizedBox(height: 10),
+
+        ElevatedButton(
+          onPressed: buscarItem,
+          child: const Text('Buscar'),
+        ),
+
+        const SizedBox(height: 20),
+
+        Expanded(
+          child: resultados.isEmpty
+              ? const Center(
+                  child: Text('Nenhum usuário encontrado'),
+                )
+              : ListView.builder(
+                  itemCount: resultados.length,
+                  itemBuilder: (context, index) {
+                    final usuario = resultados[index];
+
+                    return ListTile(
+                      title: Text(usuario.name),
+                      subtitle: Text("${usuario.email}, Idade: ${usuario.age.toString()}" ),
+                    );
+                  },
+                ),
+        ),
+      ],
+    ),
+  ),
+);
+
+
+
+
+
   }
 }
